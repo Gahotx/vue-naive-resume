@@ -4,7 +4,9 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
-import './assets/main.css'
+import './style/main.css'
+import 'uno.css'
+import '@unocss/reset/normalize.css'
 
 // 通用字体
 import 'vfonts/Lato.css'

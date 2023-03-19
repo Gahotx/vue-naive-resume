@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { zhCN, dateZhCN } from 'naive-ui'
+</script>
 
 <template>
-  <NConfigProvider>
+  <NConfigProvider :locale="zhCN" :date-locale="dateZhCN">
     <RouterView />
   </NConfigProvider>
 </template>

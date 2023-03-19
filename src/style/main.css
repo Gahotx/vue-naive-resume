@@ -5,3 +5,7 @@ a {
   text-decoration: inherit;
   color: inherit;
 }
+/* 防止导航栏抖动 */
+html {
+  overflow-y: overlay;
+}

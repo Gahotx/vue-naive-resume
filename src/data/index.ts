@@ -11,10 +11,7 @@ export const RESUME_INFO: ResumeConfig = {
     aboutme: '自我评价'
   },
   avatar: {
-    src: 'https://pic.iqjty.com/2023/03/13/640edf69dc06a.jpg',
-    hidden: false,
-    round: true,
-    size: 100
+    src: 'https://pic.iqjty.com/2023/03/13/640edf69dc06a.jpg'
   },
   profile: {
     name: '刘嘉豪',

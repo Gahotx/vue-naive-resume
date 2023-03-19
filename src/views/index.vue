@@ -1,67 +1,79 @@
 <script setup lang="ts">
-import { RESUME_INFO } from '@/data'
-const info = { ...RESUME_INFO }
+import { useResumeInfo } from '@/stores'
+
+const store = useResumeInfo()
 </script>
 
 <template>
-  <main class="p-35px flex justify-center print-p-0 print-m-0">
+  <main
+    class="mt-100px mb-50px mr-17px flex justify-center print-p-0 print-m-0"
+  >
     <div
-      class="w-794px h-1600px bg-white shadow px-50px py-70px print-shadow-none"
+      class="page w-794px h-1600px bg-white px-50px py-70px !print-shadow-none"
     >
       <!-- 个人信息 -->
       <div class="flex items-center">
-        <div class="basis-150px">
+        <div v-if="store.info.avatar.src" class="basis-150px">
           <NAvatar
-            :round="info.avatar?.round"
-            :size="info.avatar?.size || 80"
-            :src="info.avatar?.src"
+            round
+            :size="100"
+            :src="store.info.avatar.src"
             class="flex justify-start"
+            :img-props="{ draggable: false }"
           />
         </div>
         <NLayout class="ml-60px">
           <NLayoutHeader class="text-3xl font-600">{{
-            info.profile.name
+            store.info.profile.name
           }}</NLayoutHeader>
           <NLayoutContent class="mt-10px">
             <NSpace :size="[12, 0]">
               <div>
-                {{ info.profile.gender }} | {{ info.profile.age }} |
-                {{ info.profile.address }}
+                {{ store.info.profile.gender }} | {{ store.info.profile.age }} |
+                {{ store.info.profile.address }}
               </div>
               <div>
                 <div class="i-mdi-cellphone-iphone w-4 h-5 inline-block"></div>
                 <a
                   class="inline-block align-top"
-                  :href="`tel:${info.profile.mobile}`"
+                  :href="`tel:${store.info.profile.mobile}`"
                   target="_blank"
                 >
-                  {{ info.profile.mobile }}
+                  {{ store.info.profile.mobile }}
                 </a>
               </div>
               <div>
                 <div class="i-mdi-email w-4 h-5 inline-block"></div>
                 <a
                   class="inline-block align-top ml-4px"
-                  :href="`mailto:${info.profile.email}`"
+                  :href="`mailto:${store.info.profile.email}`"
                   target="_blank"
                 >
-                  {{ info.profile.email }}
+                  {{ store.info.profile.email }}
                 </a>
               </div>
-              <div>
+              <div v-if="store.info.profile.github">
                 <div class="i-mdi-github w-4 h-5 inline-block"></div>
                 <a
                   class="inline-block align-top ml-4px"
-                  :href="info.profile.github"
+                  :href="store.info.profile.github"
                   target="_blank"
                 >
-                  {{ info.profile.github }}
+                  {{ store.info.profile.github }}
                 </a>
               </div>
-              <div>求职意向: {{ info.profile.intention }}</div>
-              <div>{{ info.profile.state }}</div>
-              <div>工作经验: {{ info.profile.work }}</div>
-              <div>期望薪资: {{ info.profile.salary }}</div>
+              <div v-if="store.info.profile.intention">
+                求职意向: {{ store.info.profile.intention }}
+              </div>
+              <div v-if="store.info.profile.state">
+                {{ store.info.profile.state }}
+              </div>
+              <div v-if="store.info.profile.work">
+                工作经验: {{ store.info.profile.work }}
+              </div>
+              <div v-if="store.info.profile.salary">
+                期望薪资: {{ store.info.profile.salary }}
+              </div>
             </NSpace>
           </NLayoutContent>
         </NLayout>
@@ -69,10 +81,10 @@ const info = { ...RESUME_INFO }
       <!-- 教育背景 -->
       <div>
         <div class="module mt-30px pl-25px pt-8px text-xl text-white h-42px">
-          {{ info.titleNameMap.educationList }}
+          {{ store.info.titleNameMap.educationList }}
         </div>
         <NDivider />
-        <div v-for="(item, idx) in info.educationList" :key="idx">
+        <div v-for="(item, idx) in store.info.educationList" :key="idx">
           <div class="flex mb-5px">
             <div class="flex gap-80px justify-start items-center grow">
               <div class="font-600 text-lg">{{ item.school }}</div>
@@ -93,11 +105,11 @@ const info = { ...RESUME_INFO }
       <!-- 专业技能 -->
       <div>
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
-          {{ info.titleNameMap.skillList }}
+          {{ store.info.titleNameMap.skillList }}
         </div>
         <NDivider />
         <ul class="-ml-15px">
-          <li v-for="(item, idx) in info.skillList" :key="idx">
+          <li v-for="(item, idx) in store.info.skillList" :key="idx">
             {{ item.skill }}
           </li>
         </ul>
@@ -106,10 +118,10 @@ const info = { ...RESUME_INFO }
       <!-- 工作经历 -->
       <div>
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
-          {{ info.titleNameMap.workList }}
+          {{ store.info.titleNameMap.workList }}
         </div>
         <NDivider />
-        <div v-for="(item, idx) in info.workList" :key="idx">
+        <div v-for="(item, idx) in store.info.workList" :key="idx">
           <div class="flex mb-5px">
             <div class="flex gap-80px justify-start items-center grow">
               <div class="font-600 text-lg">{{ item.company }}</div>
@@ -128,10 +140,10 @@ const info = { ...RESUME_INFO }
       <!-- 项目经历 -->
       <div>
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
-          {{ info.titleNameMap.projectList }}
+          {{ store.info.titleNameMap.projectList }}
         </div>
         <NDivider />
-        <div v-for="(item, idx) in info.projectList" :key="idx">
+        <div v-for="(item, idx) in store.info.projectList" :key="idx">
           <div class="flex mb-8px">
             <div class="flex gap-80px justify-start items-center grow">
               <div class="font-600 text-lg">{{ item.project }}</div>
@@ -155,11 +167,11 @@ const info = { ...RESUME_INFO }
       <!-- 资格证书 -->
       <div>
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
-          {{ info.titleNameMap.certificateList }}
+          {{ store.info.titleNameMap.certificateList }}
         </div>
         <NDivider />
         <div class="flex gap-30px justify-start items-center grow">
-          <div v-for="(item, idx) in info.certificateList" :key="idx">
+          <div v-for="(item, idx) in store.info.certificateList" :key="idx">
             {{ item.cert }}
           </div>
         </div>
@@ -168,11 +180,11 @@ const info = { ...RESUME_INFO }
       <!-- 自我评价 -->
       <div>
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
-          {{ info.titleNameMap.aboutme }}
+          {{ store.info.titleNameMap.aboutme }}
         </div>
         <NDivider />
         <ul class="-ml-15px">
-          <li v-for="(item, idx) in info.aboutme" :key="idx">
+          <li v-for="(item, idx) in store.info.aboutme" :key="idx">
             {{ item.desc }}
           </li>
         </ul>
@@ -191,5 +203,8 @@ const info = { ...RESUME_INFO }
 }
 :deep(.n-divider__line) {
   background: linear-gradient(to right, #a9b5ba, white);
+}
+.page {
+  box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.15);
 }
 </style>

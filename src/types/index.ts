@@ -11,11 +11,8 @@ export interface ResumeConfig {
   }
 
   // 头像
-  avatar?: {
+  avatar: {
     src: string
-    hidden: boolean
-    round?: boolean
-    size?: number
   }
 
   // 个人信息
@@ -75,4 +72,10 @@ export interface ResumeConfig {
   aboutme?: Array<{
     desc: string
   }>
+}
+
+export interface City {
+  label: string
+  value: string
+  children?: Array<City>
 }

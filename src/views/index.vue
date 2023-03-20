@@ -28,11 +28,24 @@ const store = useResumeInfo()
           }}</NLayoutHeader>
           <NLayoutContent class="mt-10px">
             <NSpace :size="[12, 0]">
-              <div>
-                {{ store.info.profile.gender }} | {{ store.info.profile.age }} |
-                {{ store.info.profile.address }}
+              <div
+                v-if="
+                  store.info.profile.gender ||
+                  store.info.profile.age ||
+                  store.info.profile.address
+                "
+              >
+                <span v-if="store.info.profile.gender">
+                  {{ store.info.profile.gender }} |
+                </span>
+                <span v-if="store.info.profile.age">
+                  {{ store.info.profile.age }} |
+                </span>
+                <span v-if="store.info.profile.address">
+                  {{ store.info.profile.address }}
+                </span>
               </div>
-              <div>
+              <div v-if="store.info.profile.mobile">
                 <div class="i-mdi-cellphone-iphone w-4 h-5 inline-block"></div>
                 <a
                   class="inline-block align-top"
@@ -42,7 +55,7 @@ const store = useResumeInfo()
                   {{ store.info.profile.mobile }}
                 </a>
               </div>
-              <div>
+              <div v-if="store.info.profile.email">
                 <div class="i-mdi-email w-4 h-5 inline-block"></div>
                 <a
                   class="inline-block align-top ml-4px"

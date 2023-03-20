@@ -2,6 +2,7 @@
 import { ref, inject } from 'vue'
 import { useResumeInfo } from '@/stores'
 import { city } from '@/data/city'
+import type { Select } from '@/types'
 
 const active = inject<boolean>('active')
 const placement = inject<string>('placement')
@@ -9,7 +10,7 @@ const placement = inject<string>('placement')
 const store = useResumeInfo()
 const outerWidth = ref(800)
 
-const gender = [
+const gender: Array<Select> = [
   {
     label: '男',
     value: '男'
@@ -17,9 +18,17 @@ const gender = [
   {
     label: '女',
     value: '女'
+  },
+  {
+    label: '保密',
+    value: ''
   }
 ]
-const state = [
+const state: Array<Select> = [
+  {
+    label: '不展示求职状态',
+    value: ''
+  },
   {
     label: '离职-随时到岗',
     value: '离职-随时到岗'

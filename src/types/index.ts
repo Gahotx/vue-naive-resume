@@ -74,8 +74,8 @@ export interface ResumeConfig {
   }>
 }
 
-export interface City {
+export interface Select {
   label: string
   value: string
-  children?: Array<City>
+  children?: Array<Select>
 }

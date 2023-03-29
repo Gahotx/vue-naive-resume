@@ -1,15 +1,17 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
-import type { ResumeConfig } from '@/types'
-import { RESUME_INFO } from '@/data'
+import { createPinia } from 'pinia'
+import persist from 'pinia-plugin-persistedstate'
 
-export const useResumeInfo = defineStore(
-  'resume',
-  () => {
-    const info = ref<ResumeConfig>(RESUME_INFO)
-    return { info }
-  },
-  {
-    persist: true
-  }
-)
+const pinia = createPinia()
+
+pinia.use(persist)
+
+export default pinia
+
+export * from './about'
+export * from './cert'
+export * from './edu'
+export * from './project'
+export * from './skill'
+export * from './title'
+export * from './user'
+export * from './work'

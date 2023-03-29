@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
-import { useResumeInfo } from '@/stores'
-import { city } from '@/data/city'
+import { city } from '@/data'
 import type { Select } from '@/types'
+import type { FormInst, FormRules } from 'naive-ui'
+import { useTitleStore, useUserStore } from '@/stores'
+
+const titleStore = useTitleStore()
+const userStore = useUserStore()
 
 const active = inject<boolean>('active')
 const placement = inject<string>('placement')
 
-const store = useResumeInfo()
 const outerWidth = ref(800)
+const formRef = ref<FormInst | null>(null)
+const size = ref<'small' | 'medium' | 'large'>('medium')
+const onlyAllowNumber = (value: string) => !value || /^\d+$/.test(value)
 
 const gender: Array<Select> = [
   {
@@ -46,6 +52,60 @@ const state: Array<Select> = [
     value: '在校-月内到岗'
   }
 ]
+const rules: FormRules = {
+  name: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '请输入姓名'
+  },
+  gender: {
+    trigger: ['blur', 'change'],
+    message: '请选择性别'
+  },
+  age: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '请输入年龄'
+  },
+  phone: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '请输入邮箱'
+  },
+  email: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '请输入邮箱'
+  },
+  avatar: {
+    trigger: ['blur', 'input'],
+    message: '请输入头像地址'
+  },
+  address: {
+    trigger: ['blur', 'change'],
+    message: '请选择现居地'
+  },
+  github: {
+    trigger: ['blur', 'input'],
+    message: '请输入 Github 地址'
+  },
+  intention: {
+    trigger: ['blur', 'input'],
+    message: '请输入求职意向'
+  },
+  state: {
+    trigger: ['blur', 'change'],
+    message: '请选择求职状态'
+  },
+  work: {
+    trigger: ['blur', 'input'],
+    message: '请输入工作经验'
+  },
+  salary: {
+    trigger: ['blur', 'input'],
+    message: '请输入期望薪资'
+  }
+}
 </script>
 
 <template>
@@ -53,118 +113,118 @@ const state: Array<Select> = [
     <NDrawerContent title="编辑简历" header-style="font-size: 22px">
       <NSpace vertical>
         <!-- 个人信息 -->
-        <div class="font-700 text-lg mb-10px">
-          {{ store.info.titleNameMap.profile }}
+        <div>
+          <div class="text-lg mb-18px">
+            {{ titleStore.list.profile }}
+          </div>
+          <NForm
+            ref="formRef"
+            :model="userStore.list"
+            :rules="rules"
+            :size="size"
+            label-placement="top"
+            :show-feedback="false"
+          >
+            <NGrid y-gap="10" x-gap="15" :cols="2">
+              <NFormItemGi label="姓名" path="name">
+                <NInput
+                  v-model:value="userStore.list.name"
+                  type="text"
+                  placeholder="请输入姓名"
+                  clearable
+                />
+              </NFormItemGi>
+              <NFormItemGi label="性别" path="gender">
+                <NSelect
+                  v-model:value="userStore.list.gender"
+                  :options="gender"
+                />
+              </NFormItemGi>
+              <NFormItemGi label="年龄" path="age">
+                <NInput
+                  v-model:value="userStore.list.age"
+                  :allow-input="onlyAllowNumber"
+                  type="text"
+                  placeholder="请输入年龄"
+                  clearable
+                />
+              </NFormItemGi>
+              <NFormItemGi label="电话" path="phone">
+                <NInput
+                  v-model:value="userStore.list.phone"
+                  :allow-input="onlyAllowNumber"
+                  type="text"
+                  placeholder="请输入手机号"
+                  clearable
+                />
+              </NFormItemGi>
+              <NFormItemGi label="邮箱" path="email">
+                <NInput
+                  v-model:value="userStore.list.email"
+                  type="text"
+                  placeholder="请输入邮箱"
+                  clearable
+                />
+              </NFormItemGi>
+              <NFormItemGi label="头像" path="avatar">
+                <NInput
+                  v-model:value="userStore.list.avatar"
+                  type="text"
+                  placeholder="请输入头像地址"
+                  clearable
+                />
+              </NFormItemGi>
+              <NFormItemGi label="现居地" path="address">
+                <NCascader
+                  v-model:value="userStore.list.address"
+                  placeholder="请选择现居地"
+                  expand-trigger="hover"
+                  :options="city"
+                  check-strategy="child"
+                  :show-path="false"
+                />
+              </NFormItemGi>
+              <NFormItemGi label="Github" path="github">
+                <NInput
+                  v-model:value="userStore.list.github"
+                  type="text"
+                  placeholder="请输入 Github 地址"
+                  clearable
+                />
+              </NFormItemGi>
+              <NFormItemGi label="求职意向" path="intention">
+                <NInput
+                  v-model:value="userStore.list.intention"
+                  type="text"
+                  placeholder="请输入求职意向"
+                  clearable
+                />
+              </NFormItemGi>
+              <NFormItemGi label="求职状态" path="state">
+                <NSelect
+                  v-model:value="userStore.list.state"
+                  :options="state"
+                />
+              </NFormItemGi>
+              <NFormItemGi label="工作经验" path="work">
+                <NInput
+                  v-model:value="userStore.list.work"
+                  type="text"
+                  placeholder="请输入工作经验"
+                  clearable
+                />
+              </NFormItemGi>
+              <NFormItemGi label="期望薪资" path="salary">
+                <NInput
+                  v-model:value="userStore.list.salary"
+                  type="text"
+                  placeholder="请输入期望薪资"
+                  clearable
+                />
+              </NFormItemGi>
+            </NGrid>
+          </NForm>
         </div>
-        <NGrid x-gap="12" y-gap="8" :cols="2">
-          <NGi>
-            <div class="text-base text-gray-5">姓名</div>
-            <NInput
-              v-model:value="store.info.profile.name"
-              type="text"
-              placeholder="请输入姓名"
-              clearable
-            />
-          </NGi>
-          <NGi>
-            <div class="text-base text-gray-5">性别</div>
-            <NSelect
-              v-model:value="store.info.profile.gender"
-              :options="gender"
-            />
-          </NGi>
-          <NGi>
-            <div class="text-base text-gray-5">年龄</div>
-            <NInput
-              v-model:value="store.info.profile.age"
-              type="text"
-              placeholder="请输入年龄"
-              clearable
-            />
-          </NGi>
-          <NGi>
-            <div class="text-base text-gray-5">电话</div>
-            <NInput
-              v-model:value="store.info.profile.mobile"
-              type="text"
-              placeholder="请输入手机号"
-              clearable
-            />
-          </NGi>
-          <NGi>
-            <div class="text-base text-gray-5">邮箱</div>
-            <NInput
-              v-model:value="store.info.profile.email"
-              type="text"
-              placeholder="请输入邮箱"
-              clearable
-            />
-          </NGi>
-          <NGi>
-            <div class="text-base text-gray-5">头像</div>
-            <NInput
-              v-model:value="store.info.avatar.src"
-              type="text"
-              placeholder="请输入头像地址"
-              clearable
-            />
-          </NGi>
-          <NGi>
-            <div class="text-base text-gray-5">现居地</div>
-            <NCascader
-              v-model:value="store.info.profile.address"
-              placeholder="请选择现居地"
-              expand-trigger="hover"
-              :options="city"
-              check-strategy="child"
-              :show-path="false"
-            />
-          </NGi>
-          <NGi>
-            <div class="text-base text-gray-5">Github</div>
-            <NInput
-              v-model:value="store.info.profile.github"
-              type="text"
-              placeholder="请输入 Github 地址"
-              clearable
-            />
-          </NGi>
-          <NGi>
-            <div class="text-base text-gray-5">求职意向</div>
-            <NInput
-              v-model:value="store.info.profile.intention"
-              type="text"
-              placeholder="请输入求职意向"
-              clearable
-            />
-          </NGi>
-          <NGi>
-            <div class="text-base text-gray-5">求职状态</div>
-            <NSelect
-              v-model:value="store.info.profile.state"
-              :options="state"
-            />
-          </NGi>
-          <NGi>
-            <div class="text-base text-gray-5">工作经验</div>
-            <NInput
-              v-model:value="store.info.profile.work"
-              type="text"
-              placeholder="请输入工作经验"
-              clearable
-            />
-          </NGi>
-          <NGi>
-            <div class="text-base text-gray-5">期望薪资</div>
-            <NInput
-              v-model:value="store.info.profile.salary"
-              type="text"
-              placeholder="请输入期望薪资"
-              clearable
-            />
-          </NGi>
-        </NGrid>
-        <div></div>
       </NSpace>
     </NDrawerContent>
 

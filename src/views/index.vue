@@ -1,7 +1,23 @@
 <script setup lang="ts">
-import { useResumeInfo } from '@/stores'
+import {
+  useAboutStore,
+  useCertStore,
+  useEduStore,
+  useProjectStore,
+  useSkillStore,
+  useTitleStore,
+  useUserStore,
+  useWorkStore
+} from '@/stores'
 
-const store = useResumeInfo()
+const aboutStore = useAboutStore()
+const certStore = useCertStore()
+const eduStore = useEduStore()
+const projectStore = useProjectStore()
+const skillStore = useSkillStore()
+const titleStore = useTitleStore()
+const userStore = useUserStore()
+const workStore = useWorkStore()
 </script>
 
 <template>
@@ -13,79 +29,79 @@ const store = useResumeInfo()
     >
       <!-- 个人信息 -->
       <div class="flex items-center">
-        <div v-if="store.info.avatar.src" class="basis-150px">
+        <div v-if="userStore.list.avatar" class="basis-150px">
           <NAvatar
             round
             :size="100"
-            :src="store.info.avatar.src"
+            :src="userStore.list.avatar"
             class="flex justify-start"
             :img-props="{ draggable: false }"
           />
         </div>
         <NLayout class="ml-60px">
           <NLayoutHeader class="text-3xl font-600">{{
-            store.info.profile.name
+            userStore.list.name
           }}</NLayoutHeader>
           <NLayoutContent class="mt-10px">
             <NSpace :size="[12, 0]">
               <div
                 v-if="
-                  store.info.profile.gender ||
-                  store.info.profile.age ||
-                  store.info.profile.address
+                  userStore.list.gender ||
+                  userStore.list.age ||
+                  userStore.list.address
                 "
               >
-                <span v-if="store.info.profile.gender">
-                  {{ store.info.profile.gender }} |
+                <span v-if="userStore.list.gender">
+                  {{ userStore.list.gender }} |
                 </span>
-                <span v-if="store.info.profile.age">
-                  {{ store.info.profile.age }} |
+                <span v-if="userStore.list.age">
+                  {{ userStore.list.age }} |
                 </span>
-                <span v-if="store.info.profile.address">
-                  {{ store.info.profile.address }}
+                <span v-if="userStore.list.address">
+                  {{ userStore.list.address }}
                 </span>
               </div>
-              <div v-if="store.info.profile.mobile">
+              <div v-if="userStore.list.phone">
                 <div class="i-mdi-cellphone-iphone w-4 h-5 inline-block"></div>
                 <a
                   class="inline-block align-top"
-                  :href="`tel:${store.info.profile.mobile}`"
+                  :href="`tel:${userStore.list.phone}`"
                   target="_blank"
                 >
-                  {{ store.info.profile.mobile }}
+                  {{ userStore.list.phone }}
                 </a>
               </div>
-              <div v-if="store.info.profile.email">
+              <div v-if="userStore.list.email">
                 <div class="i-mdi-email w-4 h-5 inline-block"></div>
                 <a
                   class="inline-block align-top ml-4px"
-                  :href="`mailto:${store.info.profile.email}`"
+                  :href="`mailto:${userStore.list.email}`"
                   target="_blank"
                 >
-                  {{ store.info.profile.email }}
+                  {{ userStore.list.email }}
                 </a>
               </div>
-              <div v-if="store.info.profile.github">
+              <div v-if="userStore.list.github">
                 <div class="i-mdi-github w-4 h-5 inline-block"></div>
                 <a
                   class="inline-block align-top ml-4px"
-                  :href="store.info.profile.github"
+                  :href="userStore.list.github"
                   target="_blank"
                 >
-                  {{ store.info.profile.github }}
+                  {{ userStore.list.github }}
                 </a>
               </div>
-              <div v-if="store.info.profile.intention">
-                求职意向: {{ store.info.profile.intention }}
+              <div v-if="userStore.list.intention">
+                求职意向: {{ userStore.list.intention }}
               </div>
-              <div v-if="store.info.profile.state">
-                {{ store.info.profile.state }}
+              <div v-if="userStore.list.state">
+                {{ userStore.list.state }}
               </div>
-              <div v-if="store.info.profile.work">
-                工作经验: {{ store.info.profile.work }}
+              <div v-if="userStore.list.work">
+                工作经验: {{ userStore.list.work }}
               </div>
-              <div v-if="store.info.profile.salary">
-                期望薪资: {{ store.info.profile.salary }}
+              <div v-if="userStore.list.salary">
+                期望薪资: {{ userStore.list.salary }}
               </div>
             </NSpace>
           </NLayoutContent>
@@ -94,10 +110,10 @@ const store = useResumeInfo()
       <!-- 教育背景 -->
       <div>
         <div class="module mt-30px pl-25px pt-8px text-xl text-white h-42px">
-          {{ store.info.titleNameMap.educationList }}
+          {{ titleStore.list.educationList }}
         </div>
         <NDivider />
-        <div v-for="(item, idx) in store.info.educationList" :key="idx">
+        <div v-for="(item, idx) in eduStore.list" :key="idx">
           <div class="flex mb-5px">
             <div class="flex gap-80px justify-start items-center grow">
               <div class="font-600 text-lg">{{ item.school }}</div>
@@ -118,11 +134,11 @@ const store = useResumeInfo()
       <!-- 专业技能 -->
       <div>
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
-          {{ store.info.titleNameMap.skillList }}
+          {{ titleStore.list.skillList }}
         </div>
         <NDivider />
         <ul class="-ml-15px">
-          <li v-for="(item, idx) in store.info.skillList" :key="idx">
+          <li v-for="(item, idx) in skillStore.list" :key="idx">
             {{ item.skill }}
           </li>
         </ul>
@@ -131,10 +147,10 @@ const store = useResumeInfo()
       <!-- 工作经历 -->
       <div>
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
-          {{ store.info.titleNameMap.workList }}
+          {{ titleStore.list.workList }}
         </div>
         <NDivider />
-        <div v-for="(item, idx) in store.info.workList" :key="idx">
+        <div v-for="(item, idx) in workStore.list" :key="idx">
           <div class="flex mb-5px">
             <div class="flex gap-80px justify-start items-center grow">
               <div class="font-600 text-lg">{{ item.company }}</div>
@@ -153,10 +169,10 @@ const store = useResumeInfo()
       <!-- 项目经历 -->
       <div>
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
-          {{ store.info.titleNameMap.projectList }}
+          {{ titleStore.list.projectList }}
         </div>
         <NDivider />
-        <div v-for="(item, idx) in store.info.projectList" :key="idx">
+        <div v-for="(item, idx) in projectStore.list" :key="idx">
           <div class="flex mb-8px">
             <div class="flex gap-80px justify-start items-center grow">
               <div class="font-600 text-lg">{{ item.project }}</div>
@@ -180,11 +196,11 @@ const store = useResumeInfo()
       <!-- 资格证书 -->
       <div>
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
-          {{ store.info.titleNameMap.certificateList }}
+          {{ titleStore.list.certificateList }}
         </div>
         <NDivider />
         <div class="flex gap-30px justify-start items-center grow">
-          <div v-for="(item, idx) in store.info.certificateList" :key="idx">
+          <div v-for="(item, idx) in certStore.list" :key="idx">
             {{ item.cert }}
           </div>
         </div>
@@ -193,11 +209,11 @@ const store = useResumeInfo()
       <!-- 自我评价 -->
       <div>
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
-          {{ store.info.titleNameMap.aboutme }}
+          {{ titleStore.list.aboutme }}
         </div>
         <NDivider />
         <ul class="-ml-15px">
-          <li v-for="(item, idx) in store.info.aboutme" :key="idx">
+          <li v-for="(item, idx) in aboutStore.list" :key="idx">
             {{ item.desc }}
           </li>
         </ul>

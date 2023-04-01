@@ -30,6 +30,8 @@ watch(pageHeight, (newVal, oldVal) => {
     } else {
       navShow.value = true
     }
+  } else {
+    navShow.value = true
   }
 })
 

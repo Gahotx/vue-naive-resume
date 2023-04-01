@@ -27,17 +27,17 @@ export interface UserInfo {
 
 // 教育背景
 export interface EducationExp {
+  id: string
   time: [string | number, string | number]
   school: string
   major: string
   grade: string
-  course: string
-  score: string
-  duty: string
+  eduExp: string
 }
 
 // 工作经历
 export interface WorkExp {
+  id: string
   company: string
   department: string
   time: [string | number, string | number]
@@ -46,6 +46,7 @@ export interface WorkExp {
 
 // 项目经历
 export interface ProjectExp {
+  id: string
   project: string
   role: string
   time: [string | number, string | number]

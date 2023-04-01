@@ -25,7 +25,7 @@ const workStore = useWorkStore()
     class="mt-100px mb-50px mr-17px flex justify-center print-p-0 print-m-0"
   >
     <div
-      class="page w-794px h-1600px bg-white px-50px py-70px !print-shadow-none"
+      class="page w-794px min-h-1123px bg-white px-50px py-70px !print-shadow-none"
     >
       <!-- 个人信息 -->
       <div class="flex items-center">
@@ -113,7 +113,7 @@ const workStore = useWorkStore()
           {{ titleStore.list.educationList }}
         </div>
         <NDivider />
-        <div v-for="(item, idx) in eduStore.list" :key="idx">
+        <div v-for="(item, idx) in eduStore.list" :key="idx" class="ml-10px">
           <div class="flex mb-5px">
             <div class="flex gap-80px justify-start items-center grow">
               <div class="font-600 text-lg">{{ item.school }}</div>
@@ -125,8 +125,7 @@ const workStore = useWorkStore()
             </div>
           </div>
           <div class="mb-15px">
-            <div>{{ item.score }}</div>
-            <div>{{ item.course }}</div>
+            <div class="ws-pre-line">{{ item.eduExp }}</div>
           </div>
         </div>
       </div>
@@ -137,11 +136,11 @@ const workStore = useWorkStore()
           {{ titleStore.list.skillList }}
         </div>
         <NDivider />
-        <ul class="-ml-15px">
+        <ol class="-ml-15px">
           <li v-for="(item, idx) in skillStore.list" :key="idx">
             {{ item.skill }}
           </li>
-        </ul>
+        </ol>
       </div>
 
       <!-- 工作经历 -->
@@ -150,7 +149,7 @@ const workStore = useWorkStore()
           {{ titleStore.list.workList }}
         </div>
         <NDivider />
-        <div v-for="(item, idx) in workStore.list" :key="idx">
+        <div v-for="(item, idx) in workStore.list" :key="idx" class="ml-10px">
           <div class="flex mb-5px">
             <div class="flex gap-80px justify-start items-center grow">
               <div class="font-600 text-lg">{{ item.company }}</div>
@@ -160,9 +159,7 @@ const workStore = useWorkStore()
               {{ item.time[0] }} - {{ item.time[1] }}
             </div>
           </div>
-          <div class="mb-15px">
-            <div>{{ item.desc }}</div>
-          </div>
+          <div class="mb-15px ws-pre-line">{{ item.desc }}</div>
         </div>
       </div>
 
@@ -172,7 +169,11 @@ const workStore = useWorkStore()
           {{ titleStore.list.projectList }}
         </div>
         <NDivider />
-        <div v-for="(item, idx) in projectStore.list" :key="idx">
+        <div
+          v-for="(item, idx) in projectStore.list"
+          :key="idx"
+          class="ml-10px"
+        >
           <div class="flex mb-8px">
             <div class="flex gap-80px justify-start items-center grow">
               <div class="font-600 text-lg">{{ item.project }}</div>
@@ -184,10 +185,12 @@ const workStore = useWorkStore()
           </div>
           <div class="mb-15px">
             <div class="mb-5px">
-              <b>项目描述：</b> <span>{{ item.desc }}</span>
+              <b>项目描述：</b>
+              <span>{{ item.desc }}</span>
             </div>
             <div>
-              <b>项目内容：</b> <span>{{ item.content }}</span>
+              <b>项目内容：</b>
+              <div class="ws-pre-line">{{ item.content }}</div>
             </div>
           </div>
         </div>
@@ -199,7 +202,7 @@ const workStore = useWorkStore()
           {{ titleStore.list.certificateList }}
         </div>
         <NDivider />
-        <div class="flex gap-30px justify-start items-center grow">
+        <div class="flex gap-30px justify-start items-center grow ml-10px">
           <div v-for="(item, idx) in certStore.list" :key="idx">
             {{ item.cert }}
           </div>
@@ -212,11 +215,13 @@ const workStore = useWorkStore()
           {{ titleStore.list.aboutme }}
         </div>
         <NDivider />
-        <ul class="-ml-15px">
-          <li v-for="(item, idx) in aboutStore.list" :key="idx">
-            {{ item.desc }}
-          </li>
-        </ul>
+        <div
+          v-for="(item, idx) in aboutStore.list"
+          :key="idx"
+          class="ws-pre-line ml-10px"
+        >
+          {{ item }}
+        </div>
       </div>
     </div>
   </main>

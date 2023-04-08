@@ -4,23 +4,33 @@ import { city } from '@/data'
 import WorkBox from './WorkBox.vue'
 import type { Select } from '@/types'
 import type { FormInst, FormRules } from 'naive-ui'
-import { useEduStore, useTitleStore, useUserStore } from '@/stores'
+import {
+  useAboutStore,
+  useEduStore,
+  useSkillStore,
+  useTitleStore,
+  useUserStore,
+  useWorkStore,
+  useProjectStore
+} from '@/stores'
 
-// const aboutStore = useAboutStore()
+const aboutStore = useAboutStore()
 // const certStore = useCertStore()
 const eduStore = useEduStore()
-// const projectStore = useProjectStore()
-// const skillStore = useSkillStore()
+const projectStore = useProjectStore()
+const skillStore = useSkillStore()
 const titleStore = useTitleStore()
 const userStore = useUserStore()
-// const workStore = useWorkStore()
+const workStore = useWorkStore()
 
 const active = inject<boolean>('active')
 const placement = inject<string>('placement')
 
-const outerWidth = ref(800)
+const outerWidth = ref(790)
 const userForm = ref<FormInst | null>(null)
 const eduForm = ref<FormInst | null>(null)
+const workForm = ref<FormInst | null>(null)
+const projectForm = ref<FormInst | null>(null)
 const onlyAllowNumber = (value: string) => !value || /^\d+$/.test(value)
 
 const gender: Array<Select> = [
@@ -60,6 +70,10 @@ const state: Array<Select> = [
   }
 ]
 const grade: Array<Select> = [
+  {
+    label: '不展示学历',
+    value: ''
+  },
   {
     label: '初中及以下',
     value: '初中及以下'
@@ -270,11 +284,14 @@ const userRules: FormRules = {
           <div class="text-lg mb-12px mt-15px">
             {{ titleStore.list.educationList }}
           </div>
-          <WorkBox :list="eduStore.list">
+          <WorkBox
+            :list="eduStore.list"
+            @remove="(index) => eduStore.list.splice(index, 1)"
+          >
             <template #header="{ item }">{{ item.school }}</template>
             <template #header-extra="{ item }">
               {{ item.major }}
-              <NDivider vertical />
+              <NDivider vertical v-if="item.grade" />
               {{ item.grade }}
               <NDivider vertical />
               {{ item.time[0] }} - {{ item.time[1] }}
@@ -319,12 +336,168 @@ const userRules: FormRules = {
                       v-model:value="item.eduExp"
                       type="textarea"
                       placeholder="请输入在校经历"
+                      show-count
+                      maxlength="500"
+                      autosize
                     />
                   </NFormItemGi>
                 </NGrid>
               </NForm>
             </template>
           </WorkBox>
+        </div>
+        <!-- 专业技能 -->
+        <div>
+          <div class="text-lg mb-12px mt-15px">
+            {{ titleStore.list.skillList }}
+          </div>
+          <NInput
+            v-model:value="skillStore.list.skill"
+            type="textarea"
+            placeholder="请输入专业技能"
+            show-count
+            maxlength="500"
+            autosize
+          />
+        </div>
+        <!-- 工作经历 -->
+        <div>
+          <div class="text-lg mb-12px mt-15px">
+            {{ titleStore.list.workList }}
+          </div>
+          <WorkBox
+            :list="workStore.list"
+            @remove="(index) => workStore.list.splice(index, 1)"
+          >
+            <template #header="{ item }">{{ item.company }}</template>
+            <template #header-extra="{ item }">
+              {{ item.role }}
+              <NDivider vertical />
+              {{ item.time[0] }} - {{ item.time[1] }}
+            </template>
+            <template #content="{ item }">
+              <NForm
+                ref="workForm"
+                :model="item"
+                label-placement="top"
+                :show-feedback="false"
+              >
+                <NGrid y-gap="10" x-gap="15" :cols="2">
+                  <NFormItemGi label="公司名称" path="company">
+                    <NInput
+                      v-model:value="item.company"
+                      type="text"
+                      placeholder="请输入学校名称"
+                      clearable
+                    />
+                  </NFormItemGi>
+                  <NFormItemGi label="工作时间" path="time">
+                    <NDatePicker
+                      v-model:formatted-value="item.time"
+                      value-format="yyyy.MM"
+                      type="monthrange"
+                      clearable
+                    />
+                  </NFormItemGi>
+                  <NFormItemGi label="职位名称" path="role">
+                    <NInput
+                      v-model:value="item.role"
+                      type="text"
+                      placeholder="请输入职位名称"
+                      clearable
+                    />
+                  </NFormItemGi>
+                  <NFormItemGi span="2" label="工作内容" path="content">
+                    <NInput
+                      v-model:value="item.content"
+                      type="textarea"
+                      placeholder="请输入工作内容"
+                      show-count
+                      maxlength="500"
+                      autosize
+                    />
+                  </NFormItemGi>
+                </NGrid>
+              </NForm>
+            </template>
+          </WorkBox>
+        </div>
+        <!-- 项目经历 -->
+        <div>
+          <div class="text-lg mb-12px mt-15px">
+            {{ titleStore.list.projectList }}
+          </div>
+          <WorkBox
+            :list="projectStore.list"
+            @remove="(index) => projectStore.list.splice(index, 1)"
+          >
+            <template #header="{ item }">{{ item.project }}</template>
+            <template #header-extra="{ item }">
+              {{ item.role }}
+              <NDivider vertical />
+              {{ item.time[0] }} - {{ item.time[1] }}
+            </template>
+            <template #content="{ item }">
+              <NForm
+                ref="projectForm"
+                :model="item"
+                label-placement="top"
+                :show-feedback="false"
+              >
+                <NGrid y-gap="10" x-gap="15" :cols="2">
+                  <NFormItemGi label="项目名称" path="project">
+                    <NInput
+                      v-model:value="item.project"
+                      type="text"
+                      placeholder="请输入项目名称"
+                      clearable
+                    />
+                  </NFormItemGi>
+                  <NFormItemGi label="项目时间" path="time">
+                    <NDatePicker
+                      v-model:formatted-value="item.time"
+                      value-format="yyyy.MM"
+                      type="monthrange"
+                      clearable
+                    />
+                  </NFormItemGi>
+                  <NFormItemGi label="项目角色" path="role">
+                    <NInput
+                      v-model:value="item.role"
+                      type="text"
+                      placeholder="请输入项目角色"
+                      clearable
+                    />
+                  </NFormItemGi>
+                  <NFormItemGi span="2" label="项目描述" path="content">
+                    <NInput
+                      v-model:value="item.content"
+                      type="textarea"
+                      placeholder="请输入项目描述"
+                      show-count
+                      maxlength="500"
+                      autosize
+                    />
+                  </NFormItemGi>
+                </NGrid>
+              </NForm>
+            </template>
+          </WorkBox>
+        </div>
+        <!-- 技能证书 -->
+        <!-- 自我评价 -->
+        <div>
+          <div class="text-lg mb-12px mt-15px">
+            {{ titleStore.list.aboutme }}
+          </div>
+          <NInput
+            v-model:value="aboutStore.list.desc"
+            type="textarea"
+            placeholder="请输入自我评价"
+            show-count
+            maxlength="500"
+            autosize
+          />
         </div>
       </NSpace>
     </NDrawerContent>

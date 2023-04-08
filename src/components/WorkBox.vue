@@ -53,6 +53,7 @@ const moveEvent = (evt: SortableEvent) => {
         </NCollapseItem>
         <div
           class="i-mdi-close-circle-outline absolute -right-5px -top-5px bg-gray-5 z-2 cursor-pointer hover-bg-gray-7 op-0"
+          @click="$emit('remove', index)"
         ></div>
       </NCollapse>
     </template>

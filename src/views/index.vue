@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { watch } from 'vue'
+import { createDiscreteApi } from 'naive-ui'
 import {
   useAboutStore,
   useCertStore,
@@ -18,6 +20,43 @@ const skillStore = useSkillStore()
 const titleStore = useTitleStore()
 const userStore = useUserStore()
 const workStore = useWorkStore()
+
+// 一旦数据变化，就使用Message组件提示用户
+const { message } = createDiscreteApi(['message'], {
+  messageProviderProps: {
+    placement: 'bottom-left'
+  }
+})
+// 防抖函数
+const debounce = (fn: Function, delay: number) => {
+  let timer: any = null
+  return function () {
+    if (timer) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      fn()
+    }, delay)
+  }
+}
+const saveData = debounce(() => {
+  message.success('数据已保存', {
+    duration: 2000
+  })
+}, 1000)
+watch(
+  [
+    aboutStore.list,
+    certStore.list,
+    eduStore.list,
+    projectStore.list,
+    skillStore.list,
+    titleStore.list,
+    userStore.list,
+    workStore.list
+  ],
+  () => saveData()
+)
 </script>
 
 <template>
@@ -136,11 +175,9 @@ const workStore = useWorkStore()
           {{ titleStore.list.skillList }}
         </div>
         <NDivider />
-        <ol class="-ml-15px">
-          <li v-for="(item, idx) in skillStore.list" :key="idx">
-            {{ item.skill }}
-          </li>
-        </ol>
+        <div class="ws-pre-line ml-10px">
+          {{ skillStore.list.skill }}
+        </div>
       </div>
 
       <!-- 工作经历 -->
@@ -153,13 +190,13 @@ const workStore = useWorkStore()
           <div class="flex mb-5px">
             <div class="flex gap-80px justify-start items-center grow">
               <div class="font-600 text-lg">{{ item.company }}</div>
-              <div>{{ item.department }}</div>
+              <div>{{ item.role }}</div>
             </div>
             <div class="flex justify-end">
               {{ item.time[0] }} - {{ item.time[1] }}
             </div>
           </div>
-          <div class="mb-15px ws-pre-line">{{ item.desc }}</div>
+          <div class="mb-15px ws-pre-line">{{ item.content }}</div>
         </div>
       </div>
 
@@ -184,14 +221,7 @@ const workStore = useWorkStore()
             </div>
           </div>
           <div class="mb-15px">
-            <div class="mb-5px">
-              <b>项目描述：</b>
-              <span>{{ item.desc }}</span>
-            </div>
-            <div>
-              <b>项目内容：</b>
-              <div class="ws-pre-line">{{ item.content }}</div>
-            </div>
+            <div class="ws-pre-line">{{ item.content }}</div>
           </div>
         </div>
       </div>
@@ -215,12 +245,8 @@ const workStore = useWorkStore()
           {{ titleStore.list.aboutme }}
         </div>
         <NDivider />
-        <div
-          v-for="(item, idx) in aboutStore.list"
-          :key="idx"
-          class="ws-pre-line ml-10px"
-        >
-          {{ item }}
+        <div class="ws-pre-line ml-10px">
+          {{ aboutStore.list.desc }}
         </div>
       </div>
     </div>

@@ -39,9 +39,9 @@ export interface EducationExp {
 export interface WorkExp {
   id: string
   company: string
-  department: string
+  role: string
   time: [string | number, string | number]
-  desc: string
+  content: string
 }
 
 // 项目经历
@@ -50,7 +50,6 @@ export interface ProjectExp {
   project: string
   role: string
   time: [string | number, string | number]
-  desc: string
   content: string
 }
 

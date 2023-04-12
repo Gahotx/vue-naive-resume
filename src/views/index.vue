@@ -21,7 +21,6 @@ const titleStore = useTitleStore()
 const userStore = useUserStore()
 const workStore = useWorkStore()
 
-// 一旦数据变化，就使用Message组件提示用户
 const { message } = createDiscreteApi(['message'], {
   messageProviderProps: {
     placement: 'bottom-left'
@@ -147,7 +146,7 @@ watch(
         </NLayout>
       </div>
       <!-- 教育背景 -->
-      <div>
+      <div v-if="eduStore.list.length">
         <div class="module mt-30px pl-25px pt-8px text-xl text-white h-42px">
           {{ titleStore.list.educationList }}
         </div>
@@ -170,7 +169,7 @@ watch(
       </div>
 
       <!-- 专业技能 -->
-      <div>
+      <div v-if="skillStore.list.skill.length">
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
           {{ titleStore.list.skillList }}
         </div>
@@ -181,7 +180,7 @@ watch(
       </div>
 
       <!-- 工作经历 -->
-      <div>
+      <div v-if="workStore.list.length">
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
           {{ titleStore.list.workList }}
         </div>
@@ -201,7 +200,7 @@ watch(
       </div>
 
       <!-- 项目经历 -->
-      <div>
+      <div v-if="projectStore.list.length">
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
           {{ titleStore.list.projectList }}
         </div>
@@ -227,7 +226,7 @@ watch(
       </div>
 
       <!-- 资格证书 -->
-      <div>
+      <div v-if="certStore.list.length">
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
           {{ titleStore.list.certificateList }}
         </div>
@@ -240,7 +239,7 @@ watch(
       </div>
 
       <!-- 自我评价 -->
-      <div>
+      <div v-if="aboutStore.list.desc.length">
         <div class="module mt-24px pl-25px pt-8px text-xl text-white h-42px">
           {{ titleStore.list.aboutme }}
         </div>

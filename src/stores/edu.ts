@@ -6,7 +6,10 @@ export const useEduStore = defineStore(
   'educationExp',
   () => {
     const list = ref(educationList)
-    return { list }
+    const setList = (newList: typeof educationList) => {
+      list.value = newList
+    }
+    return { list, setList }
   },
   {
     persist: true

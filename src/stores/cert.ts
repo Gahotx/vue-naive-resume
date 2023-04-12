@@ -6,7 +6,10 @@ export const useCertStore = defineStore(
   'certificate',
   () => {
     const list = ref(certificateList)
-    return { list }
+    const setList = (newList: typeof certificateList) => {
+      list.value = newList
+    }
+    return { list, setList }
   },
   {
     persist: true

@@ -6,7 +6,10 @@ export const useAboutStore = defineStore(
   'aboutMe',
   () => {
     const list = ref(aboutme)
-    return { list }
+    const setList = (newList: typeof aboutme) => {
+      list.value = newList
+    }
+    return { list, setList }
   },
   {
     persist: true

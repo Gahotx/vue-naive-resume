@@ -6,7 +6,10 @@ export const useWorkStore = defineStore(
   'workExp',
   () => {
     const list = ref(workList)
-    return { list }
+    const setList = (newList: typeof workList) => {
+      list.value = newList
+    }
+    return { list, setList }
   },
   {
     persist: true

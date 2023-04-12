@@ -6,7 +6,10 @@ export const useProjectStore = defineStore(
   'projectExp',
   () => {
     const list = ref(projectList)
-    return { list }
+    const setList = (newList: typeof projectList) => {
+      list.value = newList
+    }
+    return { list, setList }
   },
   {
     persist: true

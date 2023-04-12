@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick } from 'vue'
 import { Sortable } from 'sortablejs-vue3'
 import type { AutoScrollOptions } from 'sortablejs/plugins'
 import type { SortableEvent, SortableOptions } from 'sortablejs'
@@ -17,7 +17,8 @@ const options = computed<SortableOptions | AutoScrollOptions>(() => {
     forceFallback: true,
     scrollSensitivity: 50,
     scrollSpeed: 10,
-    bubbleScroll: true
+    bubbleScroll: true,
+    handle: '.n-collapse-item__header'
   }
 })
 const moveItemInArray = <T>(array: T[], from: number, to: number) => {
@@ -25,7 +26,9 @@ const moveItemInArray = <T>(array: T[], from: number, to: number) => {
   array.splice(to, 0, item)
 }
 const moveEvent = (evt: SortableEvent) => {
-  moveItemInArray(props.list, evt.oldIndex as number, evt.newIndex as number)
+  nextTick(() =>
+    moveItemInArray(props.list, evt.oldIndex as number, evt.newIndex as number)
+  )
 }
 </script>
 
@@ -89,7 +92,6 @@ const moveEvent = (evt: SortableEvent) => {
 .i-mdi-close-circle-outline {
   transition: all 0.4s;
 }
-.n-collapse,
 .n-collapse .n-collapse-item :deep(.n-collapse-item__header) {
   cursor: move;
 }

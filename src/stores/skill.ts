@@ -6,7 +6,10 @@ export const useSkillStore = defineStore(
   'specialSkill',
   () => {
     const list = ref(skillList)
-    return { list }
+    const setList = (newList: typeof skillList) => {
+      list.value = newList
+    }
+    return { list, setList }
   },
   {
     persist: true

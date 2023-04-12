@@ -74,3 +74,14 @@ export interface Select {
   value: string
   children?: Array<Select>
 }
+
+export interface ResumeConfig {
+  pageTitle?: TitleName
+  userProfile?: UserInfo
+  educationExp?: Array<EducationExp>
+  workExp?: Array<WorkExp>
+  projectExp?: Array<ProjectExp>
+  specialSkill?: Skill
+  certificate?: Array<Certificate>
+  aboutMe?: About
+}

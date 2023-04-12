@@ -6,7 +6,10 @@ export const useTitleStore = defineStore(
   'pageTitle',
   () => {
     const list = ref(pageTitle)
-    return { list }
+    const setList = (newList: typeof pageTitle) => {
+      list.value = newList
+    }
+    return { list, setList }
   },
   {
     persist: true

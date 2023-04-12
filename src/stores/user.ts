@@ -6,7 +6,10 @@ export const useUserStore = defineStore(
   'userProfile',
   () => {
     const list = ref(profile)
-    return { list }
+    const setList = (newList: typeof profile) => {
+      list.value = newList
+    }
+    return { list, setList }
   },
   {
     persist: true
